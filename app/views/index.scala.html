@@ -1,0 +1,28 @@
+@(userForm:Form[controllers.EngineRecord],enginerecords:controllers.EngineRecords)(implicit request: RequestHeader, messages: Messages)
+
+@import helper._
+
+@main("Engine setup") {
+
+@helper.form(action = routes.HomeController.submit()) {
+  @CSRF.formField  
+  @helper.inputText(userForm("name"),'size->20)
+  @helper.inputText(userForm("path"),'size->100)
+  @helper.textarea(userForm("config"),'cols->100,'rows->5)
+  <input type="Submit" value="Add engine">
+}
+
+<hr>
+
+<table border="1" cellpadding="3" cellspacing="3">
+	<tr><td>Name</td><td>Path</td><td>Edit</td><td>Config</td><td>Delete</td></tr>
+  @for(er<-enginerecords.items){
+  <tr>
+  	<td>@er.name</td>
+  	<td>@er.path</td>
+    <td><a href="@routes.HomeController.edit(er.name)">Edit</a></td>
+    <td><pre>@er.config</pre></td>
+  	<td><a href="@routes.HomeController.delete(er.name)">Delete</a></td>
+  </tr>
+}
+}
